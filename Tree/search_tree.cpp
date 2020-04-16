@@ -43,6 +43,7 @@ stack CreateStack();
 void push(stack P, Tree tree_Node);
 void pop(stack P);
 Tree top(stack P);
+stack MakeEmpty(stack P);
 bool isEmpty(stack P);
 /**
  * @Make a tree an empty one
@@ -83,7 +84,7 @@ Position FindMax_2(const Tree tree);
 void pre_Traverse_1(const Tree tree);
 void in_Traverse_1(const Tree tree);
 void post_Traverse_1(const Tree tree);
-//void pre_Traverse_2(Tree tree,stack P);
+void pre_Traverse_2(const Tree tree,stack P);
 void in_Traverse_2(const Tree tree,stack P);
 //void post_Traverse_2(const Tree tree);
 /**
@@ -127,6 +128,7 @@ int main() {
 	      \  
 	       4 
 	*/
+	//using recursion
 	puts("pre_Traversal_1:");
 	pre_Traverse_1(ST);
 	printf("\n");
@@ -136,10 +138,16 @@ int main() {
 	puts("post_Traversal_1:");
 	post_Traverse_1(ST);
 	printf("\n");
+	//stack and while-loop
+	puts("pre_traversal_2:");
 	stack P = CreateStack();//empty stack
-	puts("post_Traversal_2:");
+	pre_Traverse_2(ST, P);
+	printf("\n");
+	puts("in_Traversal_2:");
+	P = MakeEmpty(P);
 	in_Traverse_2(ST,P);
 	printf("\n");
+	//find min/max data
 	Position min_local_1 = FindMin_1(ST);
 	Position min_local_2 = FindMin_2(ST);
 	Position max_local_1 = FindMax_1(ST);
@@ -147,7 +155,7 @@ int main() {
 	printf("min_local_1=%-2d\n", min_local_1->val);
 	printf("min_local_2=%-2d\n", min_local_2->val);
 	printf("max_local_1=%-2d\n", max_local_1->val);
-	printf("max_local_1=%-2d\n", max_local_2->val);
+	printf("max_local_2=%-2d\n", max_local_2->val);
 
 	return 0;
 }
@@ -179,6 +187,14 @@ void pop(stack P) {
 }
 Tree top(stack P) {
 	return P->next->tree_node;
+}
+stack MakeEmpty(stack P) {
+	if (P->next != NULL) {
+		stack temp = P->next;
+		free(temp);
+		P = P->next;
+	}
+	return P;
 }
 bool isEmpty(stack P) {
 	return (P->next == NULL) ? true : false;
@@ -350,9 +366,27 @@ void post_Traverse_1(const Tree tree) {
 	   / \
 	  3   5
 */
-//void pre_Traverse_2( Tree tree,stack P) {
-//	
-//}
+void pre_Traverse_2( const Tree tree,stack P) {
+	Tree temp = (Tree)malloc(sizeof(TreeNode));
+	temp = tree;
+	if (temp == NULL) {
+		return;
+	}
+	while (!isEmpty(P)||temp)
+	{
+		if (temp) {
+			printf("%-2d", temp->val);
+			push(P, temp);
+			temp = temp->left;
+		}
+		else
+		{
+			temp = top(P);
+			pop(P);
+			temp = temp->right;
+		}
+	}
+}
 void in_Traverse_2(Tree tree, stack P) {
 	Tree temp = (Tree)malloc(sizeof(TreeNode));
 	temp = tree;
