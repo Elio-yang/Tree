@@ -405,7 +405,7 @@ void in_Traverse_2(Tree tree, stack P) {
 		}
 	}
 }
-
+/2222/
 //void post_Traverse_2(const Tree tree) {
 //
 //}
