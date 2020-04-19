@@ -7,15 +7,15 @@
 	1   4   8
 	   / \
 	  3   5
-	
-	For each node, the val of left_child is smaller than the right. This 
+
+	For each node, the val of left_child is smaller than the right. This
 	kind of tree are called search_tree.
 
 	programming to make a some basic ADT of search_tree.(No same val)
-	
+
 	Methods:
 	@MakeEmpty()
-	@Find() 
+	@Find()
 	@FindMin/Max()
 	@Delete/Insert()
 	@Retrieve()
@@ -50,12 +50,12 @@ bool isEmpty(stack P);
  */
 Tree MakeEmpty(Tree tree);
 /**
- * @Create a tree 
+ * @Create a tree
  * @Insert an element into a tree
  * Method 1 using recursion
  * Method 2 using while-loop
  */
-Tree Insert_1(type val, Tree tree);//create the tree at the first time 
+Tree Insert_1(type val, Tree tree);//create the tree at the first time
 Tree Insert_2(type val, Tree tree);
 
 //Tree Delete(type val, Tree tree);
@@ -77,27 +77,27 @@ Position FindMax_1(const Tree tree);
 Position FindMax_2(const Tree tree);
 
 /**
- * @Traverse a tree 
+ * @Traverse a tree
  * Method 1 using recursion
  * Method 2 using stack
  */
 void pre_Traverse_1(const Tree tree);
 void in_Traverse_1(const Tree tree);
 void post_Traverse_1(const Tree tree);
-void pre_Traverse_2(const Tree tree,stack P);
-void in_Traverse_2(const Tree tree,stack P);
+void pre_Traverse_2(const Tree tree, stack P);
+void in_Traverse_2(const Tree tree, stack P);
 //void post_Traverse_2(const Tree tree);
 /**
  * @Get hight of a tree
  * Method 1 using recursion
  * Method 2 using stack
  */
-//int getHight_1(const Tree tree);
-//int getHight_2(const Tree tree);
-/**
- * @Delete a tree
- */
- //void Release(Tree tree);
+ //int getHight_1(const Tree tree);
+ //int getHight_2(const Tree tree);
+ /**
+  * @Delete a tree
+  */
+  //void Release(Tree tree);
 
 struct TreeNode
 {
@@ -111,7 +111,7 @@ struct StackNode
 	stack next;
 };
 int main() {
-	Tree ST=NULL;//search_tree
+	Tree ST = NULL;//search_tree
 	//ST = MakeEmpty(ST);//return NULL
 	ST = Insert_1(6, ST);
 	ST = Insert_1(5, ST);
@@ -120,13 +120,13 @@ int main() {
 	ST = Insert_1(7, ST);
 	ST = Insert_1(9, ST);
 	/*
-			 6		
+			 6
 			/ \
 		   5   7
-	      /     \
-	     3		 9
-	      \  
-	       4 
+		  /     \
+		 3		 9
+		  \
+		   4
 	*/
 	//using recursion
 	puts("pre_Traversal_1:");
@@ -145,7 +145,7 @@ int main() {
 	printf("\n");
 	puts("in_Traversal_2:");
 	P = MakeEmpty(P);
-	in_Traverse_2(ST,P);
+	in_Traverse_2(ST, P);
 	printf("\n");
 	//find min/max data
 	Position min_local_1 = FindMin_1(ST);
@@ -181,7 +181,7 @@ void push(stack P, Tree tree_Node) {
 void pop(stack P) {
 	stack temp = (stack)malloc(sizeof(StackNode));
 	//error when heap overflow
-	temp=P->next;
+	temp = P->next;
 	P->next = P->next->next;
 	free(temp);
 }
@@ -200,7 +200,7 @@ bool isEmpty(stack P) {
 	return (P->next == NULL) ? true : false;
 }
 Tree MakeEmpty(Tree tree) {
-	if (tree!=NULL){
+	if (tree != NULL) {
 		MakeEmpty(tree->left);//later tree->left will be treated as tree to be freed.
 		MakeEmpty(tree->right);
 		free(tree);
@@ -208,7 +208,7 @@ Tree MakeEmpty(Tree tree) {
 	return NULL;
 }
 Tree Insert_1(type val, Tree tree) {
-	if (tree==NULL){//for an empty tree create a Node
+	if (tree == NULL) {//for an empty tree create a Node
 		tree = (Tree)malloc(sizeof(struct TreeNode));
 		if (tree == NULL) {
 			//heap overflow
@@ -219,11 +219,11 @@ Tree Insert_1(type val, Tree tree) {
 			tree->val = val;
 			tree->left = tree->right = NULL;
 		}
-	} 
-	else if (val<tree->val){//goto the left
+	}
+	else if (val < tree->val) {//goto the left
 		tree->left = Insert_1(val, tree->left);
 	}
-	else if (val>tree->val) {
+	else if (val > tree->val) {
 		tree->right = Insert_1(val, tree->right);
 	}
 	return tree;
@@ -249,7 +249,7 @@ Tree Insert_2(type val, Tree tree) {
 	{
 		while (tree != NULL) {
 			if (val < tree->val) {
-				if (tree->left==NULL){
+				if (tree->left == NULL) {
 					tree->left = node;
 					return tree;
 				}
@@ -259,11 +259,11 @@ Tree Insert_2(type val, Tree tree) {
 				}
 			}
 			else if (val > tree->val) {
-				if (tree->right==NULL){
+				if (tree->right == NULL) {
 					tree->right = node;
 					return tree;
 				}
-				else 
+				else
 				{
 					tree = tree->right;
 				}
@@ -272,10 +272,10 @@ Tree Insert_2(type val, Tree tree) {
 	}
 }
 //Tree Delete(type val, Tree tree) {
-//	
+//
 //}
 Position Find(const type val, const Tree tree) {
-	if (tree==NULL){
+	if (tree == NULL) {
 		return NULL;
 	}
 
@@ -285,7 +285,7 @@ Position Find(const type val, const Tree tree) {
 	else if (val > tree->val) {
 		return Find(val, tree->right);
 	}
-	else 
+	else
 	{
 		return  tree;//Treenode* node for here
 	}
@@ -297,7 +297,7 @@ Position FindMin_1(const Tree tree) {
 	if (tree->left == NULL) {
 		return tree;
 	}
-	else 
+	else
 	{
 		return FindMin_1(tree->left);
 	}
@@ -366,13 +366,13 @@ void post_Traverse_1(const Tree tree) {
 	   / \
 	  3   5
 */
-void pre_Traverse_2( const Tree tree,stack P) {
+void pre_Traverse_2(const Tree tree, stack P) {
 	Tree temp = (Tree)malloc(sizeof(TreeNode));
 	temp = tree;
 	if (temp == NULL) {
 		return;
 	}
-	while (!isEmpty(P)||temp)
+	while (!isEmpty(P) || temp)
 	{
 		if (temp) {
 			printf("%-2d", temp->val);
