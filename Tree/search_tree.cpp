@@ -58,13 +58,14 @@ Tree MakeEmpty(Tree tree);
 Tree Insert_1(type val, Tree tree);//create the tree at the first time
 Tree Insert_2(type val, Tree tree);
 
-//Tree Delete(type val, Tree tree);
+Tree Delete(type val, Tree tree);
 
 /**
  * @Find a node with data:val and return this node.
  * Method 1 using recursion
  * Method 2 using while-loop
  */
+Position Find_prev(const type val, const Tree tree);
 Position Find(const type val, const Tree tree);
 /**
  * @Find the min/max data in a tree and return it's position
@@ -146,6 +147,13 @@ int main() {
 	puts("in_Traversal_2:");
 	P = MakeEmpty(P);
 	in_Traverse_2(ST, P);
+	printf("\n");
+
+	Tree findnode = Find_prev(4, ST);
+	printf("previous val of %d :%d\n", 4, findnode->val);
+	Delete(4, ST);
+	puts("pre_Traversal_1(after delete):");
+	pre_Traverse_1(ST);
 	printf("\n");
 	//find min/max data
 	Position min_local_1 = FindMin_1(ST);
@@ -271,9 +279,61 @@ Tree Insert_2(type val, Tree tree) {
 		}
 	}
 }
-//Tree Delete(type val, Tree tree) {
-//
-//}
+Tree Delete(type val, Tree tree) {
+	if (tree == NULL) {
+		exit(-1);
+	}
+	Tree curr_node;
+	curr_node = Find(val, tree);//current node
+	Tree prev_node = Find_prev(val, tree);
+	if (curr_node->left == NULL && curr_node->right == NULL) {//is a leaf_node
+		Tree temp = curr_node;
+		(curr_node->val < prev_node->val) ? (prev_node->left = NULL) : (prev_node->right = NULL);
+		free(temp);
+	}
+	else if (curr_node->left == NULL ^ curr_node->right == NULL) {//only with a left/right child
+		if (prev_node->left == curr_node) {
+			prev_node->left = curr_node->left;
+			curr_node->left = NULL;
+		}
+		else if (prev_node->right == curr_node) {
+			prev_node->right = curr_node->left;
+			curr_node->left = NULL;
+		}
+		free(curr_node);
+	}
+	else if (curr_node->left&&curr_node->right) {//with two child
+		Tree min_node = FindMin_1(curr_node->right);
+		Tree min_prev = Find_prev(min_node->val, curr_node->right);
+		if (min_node->right == NULL) {
+			curr_node->val = min_node->val;
+			min_prev->left == NULL;
+		}
+		else
+		{
+			curr_node->val = min_node->val;
+			min_prev->left = min_node->right;
+			min_node->right = NULL;
+		}
+		free(min_node);
+	}
+
+	return tree;
+}
+Position Find_prev(const type val, const Tree tree) {
+	if (tree == NULL) {
+		return NULL;
+	}
+	if ((tree->left != NULL && tree->left->val == val) || (tree->right != NULL && tree->right->val == val)) {
+		return tree;
+	}
+	if (tree->val < val) {
+		return Find_prev(val, tree->right);
+	}
+	else if (tree->val > val) {
+		return Find_prev(val, tree->left);
+	}
+}
 Position Find(const type val, const Tree tree) {
 	if (tree == NULL) {
 		return NULL;
@@ -405,7 +465,7 @@ void in_Traverse_2(Tree tree, stack P) {
 		}
 	}
 }
-/2222/
+
 //void post_Traverse_2(const Tree tree) {
 //
 //}
