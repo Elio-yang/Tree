@@ -178,7 +178,6 @@ stack CreateStack() {//P is head of stack
 		//heap overflow
 	}
 }
-
 void push(stack P, Tree tree_Node) {
 	stack temp = (stack)malloc(sizeof(StackNode));
 	//error when heap overflow
@@ -197,15 +196,19 @@ Tree top(stack P) {
 	return P->next->tree_node;
 }
 stack MakeEmpty(stack P) {
-	if (P->next != NULL) {
-		stack temp = P->next;
-		free(temp);
-		P = P->next;
+	if (P == NULL) {
+		exit(-1);
+		//empty
 	}
-	return P;
+	else
+	{
+		while (!isEmpty(P)) {
+			pop(P);
+		}
+	}
 }
 bool isEmpty(stack P) {
-	return (P->next == NULL) ? true : false;
+	return P->next == NULL;
 }
 Tree MakeEmpty(Tree tree) {
 	if (tree != NULL) {
